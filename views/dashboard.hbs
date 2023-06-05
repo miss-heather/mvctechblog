@@ -1,0 +1,50 @@
+ <div>
+  <h1>
+    <span class="text-primary code">res.ok</span>
+    <span class="text-danger code">?</span>
+    <span class="text-success code">ThinkTimeBlogSpot</span>
+    <span class="text-danger code">:</span>
+    <span class="text-warning code">urNull</span>
+    <span class="text-info code">;</span>
+  </h1>
+  <hr class="my-4" />
+  <h2>{{dashboard.name}}</h2>
+  <p class="lead">{{display.message}}<span class="text-warning code">{{user.name}}</span>!</p>
+  <br>
+  {{#if posting}}
+    {{> formpost}}
+  {{else}}
+    {{> post}}
+  {{/if}}
+</div>
+<br><br>
+<form action="/postedit" method="post">
+  {{#each blogs}}
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <h5 class="card-title mb-0" name="title">Title: {{this.title}}</h5>
+      <!-- Hidden input field for title -->
+      <input type="hidden" name="title" value="{{this.title}}">
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{this.content}}</p>
+    </div>
+    <div class="card-footer bg-warning text-dark">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted">
+          <span class="id">{{this.id}}</span>
+          Created: {{this.createdAt}}
+          <br>
+          Edited: {{this.updatedAt}}
+        </div>
+        <div>
+          <button type="submit" class="btn btn-sm btn-secondary">
+            <i id={{this.id}} class="bi bi-pencil-square" ></i> Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+  
+</form>
