@@ -1,50 +1,41 @@
- <div>
-  <h1>
-    <span class="text-primary code">res.ok</span>
-    <span class="text-danger code">?</span>
-    <span class="text-success code">ThinkTimeBlogSpot</span>
-    <span class="text-danger code">:</span>
-    <span class="text-warning code">urNull</span>
-    <span class="text-info code">;</span>
-  </h1>
-  <hr class="my-4" />
-  <h2>{{dashboard.name}}</h2>
-  <p class="lead">{{display.message}}<span class="text-warning code">{{user.name}}</span>!</p>
-  <br>
-  {{#if posting}}
-    {{> formpost}}
-  {{else}}
-    {{> post}}
-  {{/if}}
-</div>
-<br><br>
-<form action="/postedit" method="post">
-  {{#each blogs}}
-  <div class="card mb-3">
-    <div class="card-header bg-primary text-white">
-      <h5 class="card-title mb-0" name="title">Title: {{this.title}}</h5>
-      <!-- Hidden input field for title -->
-      <input type="hidden" name="title" value="{{this.title}}">
-    </div>
-    <div class="card-body">
-      <p class="card-text">{{this.content}}</p>
-    </div>
-    <div class="card-footer bg-warning text-dark">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="text-muted">
-          <span class="id">{{this.id}}</span>
-          Created: {{this.createdAt}}
-          <br>
-          Edited: {{this.updatedAt}}
+{{! Dashboard }}
+<section class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1>Welcome, {{username}}</h1>
+      {{#if loggedIn}}
+        <button
+          class="btn btn-primary mb-4"
+          onclick="location.href='/blog/create'"
+        >Create Blog</button>
+      {{/if}}
+
+      {{#each blogPosts}}
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title"><a
+                href="/blog/preview/{{this.id}}"
+              >{{title}}</a></h5>
+            <p class="card-text">{{content}}</p>
+            <p class="card-text"><small class="text-muted">Created:
+                {{this.createdAt}}</small></p>
+            <p class="card-text"><small class="text-muted">Updated:
+                {{this.updatedAt}}</small></p>
+
+            {{#each comments}}
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">Comment by
+                    {{this.username}}</h6>
+                  <p class="card-text">{{this.comment}}</p>
+                  <p class="card-text"><small class="text-muted">Created:
+                      {{this.createdAt}}</small></p>
+                </div>
+              </div>
+            {{/each}}
+          </div>
         </div>
-        <div>
-          <button type="submit" class="btn btn-sm btn-secondary">
-            <i id={{this.id}} class="bi bi-pencil-square" ></i> Edit
-          </button>
-        </div>
-      </div>
+      {{/each}}
     </div>
   </div>
-  {{/each}}
-  
-</form>
+</section>

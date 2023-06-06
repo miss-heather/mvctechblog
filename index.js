@@ -2,9 +2,10 @@ const express = require("express");
 const session = require("express-session");
 const routes = require("./controllers");
 const exphbs = require("express-handlebars");
-const sequelize = require("./config/connection");
+const { sequelize } = require("./db");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const path = require("path");
+require("dotenv").config();
 
 // create app and port
 const app = express();
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 
 // session config
 const sessionConfig = {
-  secret: "Hello world sercret",
+  secret: process.env.SESSION_SECRET,
   cookie: {
     maxAge: 1000 * 60 * 60 * 2,
   },
@@ -36,7 +37,6 @@ app.engine(
   exphbs.engine({
     extname: ".hbs",
     layoutsDir: __dirname + "/views/layouts",
-    partialsDir: __dirname + "/views/partials",
     defaultLayout: "index",
   })
 );
@@ -47,6 +47,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(routes);
 
 // connect to db before server then start server inside
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Running on port ${PORT}`));
 });
