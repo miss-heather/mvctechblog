@@ -14,6 +14,7 @@ router.post("/signup", async (req, res) => {
           req.session.save(() => {
             req.session.logged = true;
             req.session.username = req.body.username;
+            res.redirect ("/user/dashboard")
             resolve();
           });
         } catch (err) {
